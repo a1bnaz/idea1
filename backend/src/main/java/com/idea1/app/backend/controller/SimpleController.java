@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 @CrossOrigin(origins = "http//localhost:5173")
 public class SimpleController {
     
-    @GetMapping("/api/hello")
+    @GetMapping("/")
     public String sayHello() {
         return "Hello from the backend!!! :)";
     }
