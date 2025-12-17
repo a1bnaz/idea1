@@ -8,6 +8,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/*
+spring security is very picky. it refuses to talk to your custom User class. it only speaks a language it understands: UserDetails.
+- Role: adapter/translation.
+- What it does: it takes your User object and "translates" it into the UserDetails format. when spring asks 'getPassoword()', this file points to user.getPassword().
+- Connection: it is created by MyUserDetailsService and handed back to spring's internal authentication manager.
+*/
 public class UserPrincipal implements UserDetails{
 
     private User user;
