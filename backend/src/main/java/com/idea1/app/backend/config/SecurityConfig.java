@@ -6,6 +6,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -45,11 +46,7 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
 
-        // String idForEncode = "bcrypt";
-
-        // return new org.springframework.security.crypto.password.DelegatingPasswordEncoder(idForEncode, java.util.Collections.singletonMap(idForEncode, new BCryptPasswordEncoder()));
-
-        // for testing purposes only, no password encoding
-        return NoOpPasswordEncoder.getInstance();
+        return new BCryptPasswordEncoder(12); 
+        
     }
 }
