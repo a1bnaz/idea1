@@ -2,7 +2,9 @@ package com.idea1.app.backend.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,8 +27,8 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http.csrf(customizer -> customizer.disable()); // disable CSRF for testing purposes becuase I'm using Postman
-        http.authorizeHttpRequests(request -> request.anyRequest().authenticated()); // all requests need to be authenticated
-        http.formLogin(Customizer.withDefaults()); // enable form login (default login page)
+        http.authorizeHttpRequests(request -> request.requestMatchers("/register", "/login").permitAll().anyRequest().authenticated()); // all requests need to be authenticated
+        http.formLogin(form -> form.disable()); // enable form login (default login page)
         http.httpBasic(Customizer.withDefaults()); // enable basic auth (for Postman testing)
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -49,4 +51,12 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder(12); 
         
     }
+
+    // figure out what this method does later
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+
+    }
+
 }
