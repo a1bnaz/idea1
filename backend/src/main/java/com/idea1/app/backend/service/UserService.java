@@ -26,9 +26,15 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder; // inject the PasswordEncoder bean
 
-    public User register(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword())); // hash the password before saving
-        return repo.save(user);
+    public String register(User user){
+        // Hash the password before saving
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        
+        // Save the user to the database
+        User savedUser = repo.save(user);
+        
+        // Generate JWT token for the newly registered user so they can immediately access protected endpoints
+        return jwtService.generateToken(savedUser.getUsername());
     }
 
     // verify user credentials
