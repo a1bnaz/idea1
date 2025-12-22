@@ -18,7 +18,7 @@ public class SimpleController {
 
     @GetMapping("/")
     public String sayHello() {
-        return "Hello from the backend!!! :)";
+        return "Hello from the backend!! :)";
     }
 
     // temporary, delete later (maybe)
