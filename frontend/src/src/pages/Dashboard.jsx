@@ -15,7 +15,7 @@ export function useUsers(){
 function Dashboard(){
     const {data: users, isLoading, isError, error} = useUsers();
 
-    if(isLoading) return <div>Loading yoru team...</div>
+    if(isLoading) return <div>loading your dashboard...</div>
     if(isError) return <div>Error: {error.message}</div>
 
     return (

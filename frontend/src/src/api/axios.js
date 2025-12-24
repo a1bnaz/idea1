@@ -1,9 +1,10 @@
 import axios from "axios";
-import {useAuthStore} from "@/stores/auth";
+import { useAuthStore } from "../store/authStore";
 
 // 1. create an axios instance
-// this is a custom copy of axios with your backend's base URL already set
-const api = axios.create({baseURL: "http://localhost:8080/api"});
+// this is a custom copy of axios with your backend's base URL already set.
+// we point to "/api" so requests go through Vite's dev proxy (see vite.config.js)
+const api = axios.create({ baseURL: "/api" });
 
 // 2. add the request interceptor
 api.interceptors.request.use((config) => {
