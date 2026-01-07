@@ -36,6 +36,25 @@ import com.idea1.app.backend.dto.ErrorResponse;
 public class GlobalExceptionHandler {
 
     /**
+     * Custom exception thrown when a resource (Note, User, etc.) is not found
+     * This provides a semantic, purpose-built exception for resource lookups
+     */
+    public static class ResourceNotFoundException extends RuntimeException {
+        public ResourceNotFoundException(String message) {
+            super(message);
+        }
+    }
+
+    /**
+     * Custom exception for forbidden/ownership errors (returns HTTP 403)
+     */
+    public static class ForbiddenException extends RuntimeException {
+        public ForbiddenException(String message) {
+            super(message);
+        }
+    }
+
+    /**
      * Handles authentication failures (wrong username/password)
      * Returns HTTP 401 Unauthorized
      */
@@ -70,6 +89,39 @@ public class GlobalExceptionHandler {
         
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
+
+    /**
+     * Handles when a resource (Note, Post, etc.) is not found
+     * Returns HTTP 404 Not Found
+     */
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<ErrorResponse> handleResourceNotFoundException(
+            ResourceNotFoundException ex, WebRequest request) {
+        
+        ErrorResponse errorResponse = new ErrorResponse(
+            HttpStatus.NOT_FOUND.value(),
+            "Not Found",
+            ex.getMessage(),
+            request.getDescription(false).replace("uri=", "")
+        );
+        
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ErrorResponse> handleForbiddenException(
+            ForbiddenException ex, WebRequest request) {
+
+        ErrorResponse errorResponse = new ErrorResponse(
+            HttpStatus.FORBIDDEN.value(),
+            "Forbidden",
+            ex.getMessage(),
+            request.getDescription(false).replace("uri=", "")
+        );
+
+        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+    }
+
 
     /**
      * Handles any other unexpected exceptions
